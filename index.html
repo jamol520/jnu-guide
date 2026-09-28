@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>暨南大学新生生存指南</title>
+
+<!-- 暨南大学风格图标（绿底圆形校徽样式） -->
+<!-- 若要换成官方校徽图片：把校徽存为 jnu-logo.png 放到同目录，然后把这行换成
+     <link rel="icon" href="jnu-logo.png"> 即可 -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='48' fill='%232e8b3d'/%3E%3Ccircle cx='50' cy='50' r='40' fill='none' stroke='%23ffffff' stroke-width='2.5'/%3E%3Ctext x='50' y='67' font-size='48' text-anchor='middle' fill='%23ffffff' font-weight='700'%3E%E6%9A%A8%3C/text%3E%3C/svg%3E">
+
+<!-- ① 防闪烁：必须在 CSS 之前执行 -->
+<script>
+(function () {
+  try {
+    var saved = localStorage.getItem('theme');
+    var dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    document.documentElement.setAttribute('data-theme', saved || (dark ? 'dark' : 'light'));
+  } catch (e) {}
+})();
+</script>
+
+<style>
+/* ===== ② 主题变量：浅绿 ===== */
+:root{
+  color-scheme: light;
+  --green:#2e8b3d;
+  --green2:#41a94f;
+  --deep:#14532d;
+  --soft:#e3f5e4;
+  --bg:#f2faf3;
+  --surface:#ffffff;
+  --text:#1c3220;
+  --muted:#5f7a63;
+  --line:#d5e9d7;
+  --nav-bg:rgba(242,250,243,.82);
+  --nav-solid:rgba(242,250,243,.98);
+  --shadow:0 14px 40px rgba(20,80,35,.12);
+  --btn-grad:linear-gradient(135deg,#2e8b3d,#41a94f);
+  --welfare:linear-gradient(135deg,#14612f,#2e9c4d);
+  --highlight:linear-gradient(135deg,#e8f7e9,#f8fdf8);
+  --map-bg:linear-gradient(180deg,#f8fdf8,#edf9ee);
+  --glow1:rgba(76,175,80,.09);
+  --glow2:rgba(46,139,61,.09);
+  --warn-bg:#fff8ec;
+  --warn-line:#ffe2bd;
+  --warn-text:#8a5a1e;
+}
+
+/* ===== 深绿模式 ===== */
+:root[data-theme="dark"]{
+  color-scheme: dark;
+  --green:#6ec878;
+  --green2:#8ad994;
+  --deep:#b9e6bf;
+  --soft:rgba(110,200,120,.15);
+  --bg:#0a1a10;
+  --surface:#122719;
+  --text:#e4f2e6;
+  --muted:#8fb096;
+  --line:#25402e;
+  --nav-bg:rgba(10,26,16,.82);
+  --nav-solid:rgba(10,26,16,.98);
+  --shadow:0 14px 40px rgba(0,0,0,.4);
+  --btn-grad:linear-gradient(135deg,#2f8f42,#43b258);
+  --welfare:linear-gradient(135deg,#0d3d20,#1c6b35);
+  --highlight:linear-gradient(135deg,#16301f,#122719);
+  --map-bg:linear-gradient(180deg,#122719,#0e2114);
+  --glow1:rgba(76,175,80,.08);
+  --glow2:rgba(46,139,61,.10);
+  --warn-bg:#2a2415;
+  --warn-line:#4d3f1e;
+  --warn-text:#e6c78a;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",Arial,sans-serif;
+  color:var(--text);
+  background:var(--bg);
+  line-height:1.7;
+  transition:background-color .25s ease,color .25s ease;
+}
+body::before{
+  content:"";
+  position:fixed; inset:0;
+  pointer-events:none;
+  z-index:-1;
+  background:
+    radial-gradient(circle at 10% 20%, var(--glow1), transparent 25%),
+    radial-gradient(circle at 90% 10%, var(--glow2), transparent 28%);
+}
+.container{width:min(1120px,92%);margin:auto}
+
+/* ===== 导航 ===== */
+nav{
+  position:sticky;top:0;z-index:10;
+  backdrop-filter:blur(14px);
+  -webkit-backdrop-filter:blur(14px);
+  background:var(--nav-bg);
+  border-bottom:1px solid var(--line);
+  transition:background-color .25s ease,border-color .25s ease;
+}
+.nav-inner{
+  height:68px;display:flex;align-items:center;justify-content:space-between;gap:14px;
+}
+.brand{font-weight:800;color:var(--deep);letter-spacing:.5px;text-decoration:none;white-space:nowrap}
+.nav-actions{display:flex;align-items:center;gap:14px}
+.nav-links{display:flex;gap:22px}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:14px}
+.nav-links a:hover{color:var(--green)}
+
+/* 主题切换按钮 */
+.theme-toggle{
+  width:40px;height:40px;padding:0;border-radius:50%;
+  border:1px solid var(--line);
+  background:var(--surface);
+  color:var(--text);
+  font-size:18px;line-height:1;cursor:pointer;
+  display:grid;place-items:center;
+  transition:transform .2s,background-color .25s,border-color .25s;
+}
+.theme-toggle:hover{transform:scale(1.08);border-color:var(--green2)}
+.theme-toggle:active{transform:scale(.94)}
+
+/* 汉堡菜单 */
+.menu-toggle{
+  display:none;background:none;border:none;cursor:pointer;
+  padding:8px;flex-direction:column;gap:5px;
+}
+.menu-toggle span{display:block;width:24px;height:2.5px;background:var(--deep);border-radius:2px;transition:.25s}
+body.menu-open .menu-toggle span:nth-child(1){transform:translateY(7.5px) rotate(45deg)}
+body.menu-open .menu-toggle span:nth-child(2){opacity:0}
+body.menu-open .menu-toggle span:nth-child(3){transform:translateY(-7.5px) rotate(-45deg)}
+
+/* ===== Hero ===== */
+.hero{
+  padding:80px 0 65px;
+  text-align:center;
+  position:relative;overflow:hidden;
+}
+.badge{
+  display:inline-block;
+  padding:7px 14px;border-radius:999px;
+  background:var(--soft);color:var(--green);
+  font-size:14px;font-weight:700;
+}
+h1{
+  font-size:clamp(34px,6vw,64px);
+  line-height:1.15;margin:18px 0;
+  color:var(--deep);letter-spacing:-2px;
+}
+.hero p{max-width:760px;margin:0 auto;color:var(--muted);font-size:17px}
+.hero-actions{margin-top:28px;display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;
+  padding:12px 22px;border-radius:14px;text-decoration:none;font-weight:700;
+  transition:transform .2s,box-shadow .2s,background .2s,border-color .2s,color .2s;
+}
+.btn-primary{background:var(--btn-grad);color:#fff;box-shadow:var(--shadow)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 18px 42px rgba(20,80,35,.25)}
+.btn-light{background:var(--surface);color:var(--green);border:1px solid var(--line)}
+.btn-light:hover{transform:translateY(-2px);border-color:var(--green2);color:var(--green2)}
+
+.wave{
+  height:60px;margin-top:40px;
+  background:linear-gradient(180deg,transparent 0 35%,var(--surface) 36%);
+  clip-path:polygon(0 45%,10% 55%,20% 38%,30% 58%,40% 40%,50% 60%,60% 42%,70% 57%,80% 40%,90% 55%,100% 42%,100% 100%,0 100%);
+}
+
+/* ===== 区块 ===== */
+section{padding:78px 0}
+section.white{background:var(--surface);transition:background-color .25s ease}
+.section-head{text-align:center;max-width:700px;margin:0 auto 42px}
+.kicker{color:var(--green);font-weight:800;font-size:14px;letter-spacing:1px}
+h2{font-size:clamp(28px,4vw,42px);margin:8px 0 12px;color:var(--deep)}
+.section-head p{color:var(--muted);margin:0}
+
+.grid{display:grid;gap:18px}
+.cards{grid-template-columns:repeat(3,1fr)}
+.card{
+  background:var(--surface);border:1px solid var(--line);border-radius:22px;
+  padding:25px;box-shadow:0 8px 25px rgba(13,83,111,.05);
+  transition:transform .25s,box-shadow .25s,border-color .25s,background-color .25s;
+  position:relative;overflow:hidden;
+}
+.card:hover{transform:translateY(-5px);box-shadow:0 18px 40px rgba(13,83,111,.12);border-color:var(--green2)}
+.icon{
+  width:48px;height:48px;border-radius:15px;
+  display:grid;place-items:center;background:var(--soft);font-size:23px;
+}
+.card h3{margin:15px 0 8px;font-size:18px}
+.card p{margin:0;color:var(--muted);font-size:14px}
+
+.highlight{
+  margin-top:22px;padding:24px;border-radius:22px;
+  background:var(--highlight);
+  border:1px solid var(--line);
+  transition:background .25s ease,border-color .25s ease;
+}
+.clean-list{display:grid;grid-template-columns:repeat(2,1fr);gap:10px 22px;padding:0;margin:18px 0 0;list-style:none}
+.clean-list li{font-size:15px}
+.clean-list li::before{content:"✓";color:var(--green);font-weight:900;margin-right:8px}
+
+.warning{
+  margin-top:20px;padding:18px 20px;border-radius:18px;
+  background:var(--warn-bg);border:1px solid var(--warn-line);color:var(--warn-text);
+  transition:background-color .25s ease,border-color .25s ease,color .25s ease;
+}
+
+/* ===== 校区切换标签 ===== */
+.campus-tabs{
+  display:flex;flex-wrap:wrap;gap:10px;justify-content:center;
+  margin-bottom:22px;
+}
+.campus-tab{
+  padding:9px 20px;border-radius:999px;cursor:pointer;
+  border:1px solid var(--line);
+  background:var(--surface);color:var(--muted);
+  font-size:14px;font-weight:700;font-family:inherit;
+  transition:transform .2s,background .25s,color .25s,border-color .25s,box-shadow .25s;
+}
+.campus-tab:hover{border-color:var(--green2);color:var(--green);transform:translateY(-1px)}
+.campus-tab[aria-selected="true"]{
+  background:var(--btn-grad);color:#fff;border-color:transparent;
+  box-shadow:0 10px 24px rgba(20,80,35,.22);
+}
+.campus-tab:focus-visible{outline:3px solid var(--green2);outline-offset:2px}
+
+/* ===== 地图 ===== */
+.map-wrap{
+  background:var(--map-bg);
+  border:1px solid var(--line);border-radius:28px;padding:20px;
+  box-shadow:var(--shadow);
+  transition:background .25s ease,border-color .25s ease;
+}
+.map-stage{position:relative;min-height:180px}
+.map-stage img{
+  width:100%;display:block;border-radius:18px;
+  opacity:0;transition:opacity .3s ease;
+}
+.map-missing{
+  display:none;flex-direction:column;align-items:center;justify-content:center;
+  gap:8px;padding:64px 20px;text-align:center;color:var(--muted);
+  border:2px dashed var(--line);border-radius:18px;
+}
+.map-missing-icon{font-size:46px;line-height:1}
+.map-missing p{margin:0;font-size:15px}
+.map-missing code{
+  background:var(--soft);color:var(--green);
+  padding:2px 8px;border-radius:6px;font-size:13px;
+}
+.map-tip{margin:15px 5px 2px;color:var(--muted);font-size:14px;text-align:center}
+.map-tip a{color:var(--green);text-decoration:underline}
+
+.info-grid{grid-template-columns:repeat(3,1fr);margin-top:24px}
+.info-card{
+  background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:22px;
+  transition:transform .25s,box-shadow .25s,background-color .25s,border-color .25s;
+}
+.info-card:hover{transform:translateY(-4px);box-shadow:0 14px 32px rgba(13,83,111,.1)}
+.info-card h3{margin:0 0 12px;color:var(--deep)}
+.info-card ul{padding-left:18px;margin:0;color:var(--muted);font-size:14px}
+.info-card li{margin:7px 0}
+.info-card a{color:var(--green);word-break:break-all}
+
+/* ===== 福利 / 公众号 ===== */
+.welfare{
+  border-radius:32px;padding:52px 6%;
+  background:var(--welfare);
+  color:#fff;position:relative;overflow:hidden;
+  transition:background .25s ease;
+}
+.welfare::after{
+  content:"";position:absolute;width:420px;height:420px;border-radius:50%;
+  background:rgba(255,255,255,.08);right:-170px;top:-180px;
+}
+.welfare-grid{display:grid;grid-template-columns:1fr;gap:38px;position:relative;z-index:1}
+.welfare-head{text-align:center;max-width:760px;margin:0 auto}
+.welfare h2{color:#fff;margin-top:0}
+.welfare p{color:rgba(255,255,255,.88)}
+.number-box{display:flex;gap:10px;flex-wrap:wrap;margin:20px 0;justify-content:center}
+.number{padding:9px 13px;border-radius:12px;background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.18);font-weight:800}
+
+.qr-row{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:6px}
+.qr-card{
+  background:var(--surface);border-radius:24px;padding:24px 20px;
+  display:flex;flex-direction:column;align-items:center;text-align:center;
+  box-shadow:0 16px 45px rgba(0,0,0,.15);transition:transform .25s,background-color .25s;
+}
+.qr-card:hover{transform:translateY(-6px)}
+.qr-box{
+  width:150px;height:150px;border-radius:16px;
+  overflow:hidden;margin-bottom:14px;background:#f0f0f0;
+}
+.qr-box img{
+  width:100%;height:100%;object-fit:cover;object-position:center;
+  display:block;
+}
+.qr-card strong{color:var(--deep);font-size:15px}
+.qr-card .qr-desc{color:var(--muted);font-size:13px;margin:6px 0 0}
+
+/* ===== 页脚 ===== */
+footer{padding:35px 0 45px;text-align:center;color:var(--muted);font-size:14px}
+.small{font-size:13px;color:var(--muted)}
+
+/* ===== 二维码弹窗 ===== */
+.qr-modal{
+  position:fixed;inset:0;z-index:50;
+  display:none;align-items:center;justify-content:center;
+  padding:20px;
+  background:rgba(8,24,14,.55);
+  backdrop-filter:blur(6px);
+  -webkit-backdrop-filter:blur(6px);
+}
+.qr-modal.open{display:flex}
+.qr-modal-card{
+  width:100%;max-width:320px;
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:24px;
+  padding:26px;text-align:center;
+  box-shadow:var(--shadow);
+  animation:pop .22s ease;
+}
+@keyframes pop{from{transform:scale(.92);opacity:0}to{transform:scale(1);opacity:1}}
+.qr-modal-card img{width:100%;border-radius:14px;display:block}
+.qr-modal-card p{color:var(--muted);font-size:14px;margin:14px 0 18px}
+.qr-modal-close{
+  border:none;border-radius:12px;cursor:pointer;
+  background:var(--btn-grad);color:#fff;
+  padding:10px 22px;font-size:15px;font-weight:700;
+  font-family:inherit;
+  transition:transform .2s;
+}
+.qr-modal-close:hover{transform:translateY(-2px)}
+
+/* ===== 响应式 ===== */
+@media (max-width:860px){
+  .menu-toggle{display:flex}
+  .nav-links{
+    position:fixed;top:68px;left:0;right:0;
+    display:none;flex-direction:column;gap:0;
+    padding:6px 0 10px;
+    background:var(--nav-solid);
+    border-bottom:1px solid var(--line);
+    box-shadow:0 12px 28px rgba(0,0,0,.08);
+  }
+  body.menu-open .nav-links{display:flex}
+  .nav-links a{padding:13px 24px;font-size:16px}
+  .cards{grid-template-columns:repeat(2,1fr)}
+  .info-grid{grid-template-columns:1fr}
+}
+@media (max-width:620px){
+  section{padding:56px 0}
+  .hero{padding:56px 0 44px}
+  .cards{grid-template-columns:1fr}
+  .clean-list{grid-template-columns:1fr}
+  .qr-row{grid-template-columns:1fr}
+  .welfare{padding:36px 5%;border-radius:24px}
+  .map-wrap{padding:14px;border-radius:22px}
+  .campus-tab{padding:8px 15px;font-size:13px}
+}
+</style>
+</head>
+
+<body>
+
+<nav>
+  <div class="container nav-inner">
+    <a class="brand" href="#">😘 暨大新生生存指南</a>
+
+    <div class="nav-actions">
+      <div class="nav-links">
+        <a href="#about" onclick="document.body.classList.remove('menu-open')">介绍</a>
+        <a href="#map" onclick="document.body.classList.remove('menu-open')">校园地图</a>
+        <a href="#welfare" onclick="document.body.classList.remove('menu-open')">社群福利</a>
+      </div>
+
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="切换深浅模式" title="切换深浅模式">🌙</button>
+
+      <button class="menu-toggle" type="button" aria-label="打开菜单" onclick="document.body.classList.toggle('menu-open')">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="container">
+    <span class="badge">暨南大学新生专属</span>
+    <h1>哈喽 (#^.^#) 👋🏻<br>暨大新同学，你们好！</h1>
+    <p>我们是几个还没被大学生活彻底摧残的大二学长学姐。我们整理了一份尽量不让你踩坑的「暨大生存指南」。</p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="#about">先看看有什么</a>
+      <a class="btn btn-light" href="#map">查看校园地图</a>
+    </div>
+  </div>
+  <div class="wave"></div>
+</header>
+
+<section class="white" id="about">
+  <div class="container">
+    <div class="section-head">
+      <div class="kicker">ABOUT THE COMMUNITY</div>
+      <h2>📢 记得加入对应专业新生群</h2>
+      <p>很多新生只关心宿舍和军训，却容易错过大一真正值得提前了解的机会。</p>
+    </div>
+
+    <div class="grid cards">
+      <div class="card"><div class="icon">🎓</div><h3>真实经验</h3><p>学长学姐分享选课、综测、学习、生活以及各种避坑经验。</p></div>
+      <div class="card"><div class="icon">🚀</div><h3>成长机会</h3><p>竞赛、大创项目、实验室申请、班干部竞选等信息整理。</p></div>
+      <div class="card"><div class="icon">🤝</div><h3>资源互助</h3><p>靠谱兼职经验、二手资源交易、生活问题交流，信息尽量公开透明。</p></div>
+    </div>
+
+    <div class="highlight">
+      <strong>你可以在群里获得：</strong>
+      <ul class="clean-list">
+        <li>学长学姐真实经验分享</li>
+        <li>各类学科竞赛、大创项目入门攻略</li>
+        <li>学院实验室怎么进、什么时候可以申请</li>
+        <li>大一如何准备班干部竞选</li>
+        <li>选课、综测、学习生活实用干货</li>
+        <li>校内靠谱兼职经验分享</li>
+        <li>二手资源交易与互助信息</li>
+      </ul>
+    </div>
+
+    
+<!-- ================= 校园地图 ================= -->
+<!--
+  📁 各校区地图文件命名规则（放在与 index.html 同一目录）：
+     石牌校区 → jnu-shipai.jpg
+     番禺校区 → jnu-panyu.jpg
+     珠海校区 → jnu-zhuhai.jpg
+     深圳校区 → jnu-shenzhen.jpg
+     华文校区 → jnu-huawen.jpg
+  想增删校区，只需修改下方脚本里的 CAMPUSES 数组即可。
+-->
+<section id="map">
+  <div class="container">
+    <div class="section-head">
+      <div class="kicker">CAMPUS MAP</div>
+      <h2>🗺️ 校区地图</h2>
+      <p>报到前可以先熟悉一下。开学第一天少走一点冤枉路，毕竟广东的太阳没有耐心陪你散步。</p>
+    </div>
+
+    <!-- 校区切换标签（由脚本生成） -->
+    <div class="campus-tabs" id="campusTabs" role="tablist" aria-label="选择校区"></div>
+
+    <div class="map-wrap">
+      <div class="map-stage">
+        <img id="campusMapImg" src="jnu-panyu.jpg" alt="暨南大学番禺校区地图">
+        <div class="map-missing" id="mapMissing">
+          <div class="map-missing-icon">🗺️</div>
+          <p>该校区地图暂未上传</p>
+          <p class="small">请将 <code id="missingFile">jnu-xxx.jpg</code> 放入网站目录后刷新</p>
+        </div>
+      </div>
+      <div class="map-tip">
+        💡 <a id="campusMapLink" href="jnu-panyu.jpg" download>下载「番禺校区」高清 JPG 版地图</a>，方便保存在手机里随时查看
+      </div>
+    </div>
+
+    <!-- 校区生活信息（由脚本按校区渲染） -->
+    <div class="grid info-grid" id="infoGrid"></div>
+  </div>
+</section>
+
+<section class="white" id="welfare">
+  <div class="container">
+    <div class="welfare">
+      <div class="welfare-grid">
+        <div class="welfare-head">
+          <div class="kicker" style="color:#c9f2d0">Get More Information</div>
+          <h2>加入学校公众号了解更多资讯</h2>
+        </div>
+
+        <div class="qr-row">
+          <div class="qr-card">
+            <div class="qr-box">
+              <img src="qr-jnugzh.jpg" alt="暨南大学公众号二维码">
+            </div>
+            <strong>暨南大学</strong>
+            <p class="qr-desc">学校信息可以在公众号查询。</p>
+          </div>
+          <div class="qr-card">
+            <div class="qr-box">
+              <img src="qr-jnupanyugzh.jpg" alt="暨南大学番禺校区二维码">
+            </div>
+            <strong>番禺校区</strong>
+            <p class="qr-desc">了解更多关于番禺校区的事情。</p>
+          </div>
+          <div class="qr-card">
+            <div class="qr-box">
+              <img src="qr-jnufuwuhao.jpg" alt="暨南大学服务号二维码">
+            </div>
+            <strong>暨南大学服务号</strong>
+            <p class="qr-desc">是暨南人的好帮手。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div>😘暨南大学新生生存指南</div>
+    <div class="small">由在校学长学姐整理 · 信息持续更新</div>
+  </div>
+</footer>
+
+<!-- 二维码弹窗（需要时可调用 window.openWechatModal() 打开） -->
+<div class="qr-modal" id="wechatModal" role="dialog" aria-modal="true" aria-label="微信公众号二维码">
+  <div class="qr-modal-card">
+    <img src="qr-wechat.jpg" alt="微信公众号二维码">
+    <p>微信扫码关注公众号</p>
+    <button class="qr-modal-close" type="button" id="wechatClose">关闭</button>
+  </div>
+</div>
+
+<!-- ③ 主题切换逻辑 -->
+<script>
+(function () {
+  var root = document.documentElement;
+  var btn = document.getElementById('themeToggle');
+
+  function render() {
+    var isDark = root.getAttribute('data-theme') === 'dark';
+    btn.textContent = isDark ? '☀️' : '🌙';
+    btn.setAttribute('aria-pressed', String(isDark));
+    btn.setAttribute('aria-label', isDark ? '切换到浅色模式' : '切换到深色模式');
+  }
+
+  btn.addEventListener('click', function () {
+    var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    try { localStorage.setItem('theme', next); } catch (e) {}
+    render();
+  });
+
+  var mq = window.matchMedia('(prefers-color-scheme: dark)');
+  function onChange(e) {
+    var saved = null;
+    try { saved = localStorage.getItem('theme'); } catch (err) {}
+    if (!saved) {
+      root.setAttribute('data-theme', e.matches ? 'dark' : 'light');
+      render();
+    }
+  }
+  if (mq.addEventListener) mq.addEventListener('change', onChange);
+  else if (mq.addListener) mq.addListener(onChange);
+
+  render();
+})();
+
+/* ④ 二维码弹窗控制 */
+(function () {
+  var modal = document.getElementById('wechatModal');
+  var closeBtn = document.getElementById('wechatClose');
+  if (!modal || !closeBtn) return;
+
+  function hide() {
+    modal.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  window.openWechatModal = function () {
+    modal.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  };
+  closeBtn.addEventListener('click', hide);
+  modal.addEventListener('click', function (e) { if (e.target === modal) hide(); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') hide(); });
+})();
+
+/* ⑤ 校区地图切换 */
+(function () {
+  /* ====== 这里配置各校区：name 标签名 / file 图片文件名 / info 下方信息卡 ====== */
+  var CAMPUSES = [
+    {
+      key: 'panyu',
+      name: '番禺校区',
+      file: 'jnu-panyu.jpg',
+      alt: '暨南大学番禺校区地图',
+      info: [
+        {
+         title: '📍 校区位置',
+          items: [
+            '<b>地址：</b>广东省广州市番禺区兴业大道东855号',
+            '<b>地铁：</b>4号线新造站，骑行约 10 分钟',
+            '<b>周边：</b>临近学畔公馆，配套成熟'
+          ]
+        },
+        {
+          title: '🏥 校医院',
+          items: [
+            '提供全天 24 小时急诊服务',
+            '<b>地址：</b>位于 T1 宿舍楼向西前行 100 米处',
+            '<b>开诊时间：</b>周一至周五 8:30-22:00',
+            '<b>急诊电话：</b>37330127（白天）、37330120（夜间）',
+            '<b>保险报销：</b><a href="https://gyb.jnu.edu.cn/9256/list.htm" target="_blank" rel="noopener">gyb.jnu.edu.cn/9256/list.htm</a>'
+          ]
+        },
+        {
+          title: '📦 快递站点',
+          items: [
+            '<b>营业时间：</b>8:00-22:30',
+            '<b>位置：</b>学生宿舍T11 楼下'
+          ]
+        }
+      ]
+    },
+    {
+      key: 'shipai',
+      name: '石牌校区',
+      file: 'jnu-shipai.jpg',
+      alt: '暨南大学石牌校区地图',
+      info: [
+        {
+          title: '📍 校区位置',
+          items: [
+            '<b>地址：</b>广州市天河区黄埔大道西 601 号',
+            '<b>地铁：</b>3 号线岗顶站，步行约 10 分钟',
+            '<b>周边：</b>天河商圈，吃喝玩乐配套成熟'
+          ]
+        },
+        {
+          title: '🏥 校医院',
+          items: [
+            '<b>地址：</b>位于学生活动中心楼下，或者前往广州华侨医院',
+            '<b>开诊时间：</b>周一至周五 8:00-17:30，周六至周日9:00-11:30',
+            '<b>华侨医院急诊电话：</b>38688102',
+            '<b>保险报销：</b><a href="https://gyb.jnu.edu.cn/9256/list.htm" target="_blank" rel="noopener">gyb.jnu.edu.cn/9256/list.htm</a>'
+          ]
+        },
+        {
+          title: '📦 快递站点',
+          items: [
+            '<b>营业时间：</b>一般为 8:00-22:30',
+            '<b>位置：</b>周转B栋楼下快递中心和周转A栋楼下快递中心（快递短信上都有标记A或B栋）'
+          ]
+        }
+      ]
+    },
+    {
+      key: 'zhuhai',
+      name: '珠海校区',
+      file: 'jnu-zhuhai.jpg',
+      alt: '暨南大学珠海校区地图',
+      info: [
+        {
+          title: '📍 校区位置',
+          items: [
+            '<b>地址：</b>珠海市香洲区前山路 206 号',
+            '<b>交通：</b>距珠海站、拱北口岸均较近',
+            '<b>周边：</b>市区生活配套完善，出行方便'
+          ]
+        },
+        {
+          title: '🚿 热水 / 校园卡',
+          items: [
+            '<b>充值：</b>宿舍楼自助充值点或线上小程序',
+            '<b>提示：</b>具体操作按报到时学院指引进行'
+          ]
+        },
+        {
+          title: '📦 快递站点',
+          items: [
+            '<b>营业时间：</b>一般为 8:00-22:30',
+            '<b>位置：</b>共有两个快递点，一个在校外北门对面，一个在校内1栋宿舍楼下一层架空处。'
+          ]
+        }
+      ]
+    },
+    {
+      key: 'shenzhen',
+      name: '深圳校区',
+      file: 'jnu-shenzhen.jpg',
+      alt: '暨南大学深圳校区地图',
+      info: [
+        {
+          title: '📍 校区位置',
+          items: [
+            '<b>地址：</b>深圳市南山区侨城东街 6 号',
+            '<b>周边：</b>华侨城片区，地铁公交便利',
+            '<b>气候：</b>夏季湿热，注意防晒补水'
+          ]
+        },
+        {
+          title: '🚿 热水 / 校园卡',
+          items: [
+            '<b>充值：</b>宿舍楼自助充值点或线上小程序',
+            '<b>提示：</b>以报到时学院发放的指引为准'
+          ]
+        },
+        {
+          title: '📦 快递站点',
+          items: [
+            '<b>营业时间：</b>一般为 8:00-22:30',
+            '<b>位置：</b>快递柜位于学生宿舍四栋楼下'
+          ]
+        }
+      ]
+    },
+    {
+      key: 'huawen',
+      name: '华文校区',
+      file: 'jnu-huawen.jpg',
+      alt: '暨南大学华文校区地图',
+      info: [
+        {
+          title: '📍 校区位置',
+          items: [
+            '<b>地址：</b>广州市天河区瘦狗岭路 377 号',
+            '<b>交通：</b>邻近地铁与公交站点，进城方便',
+            '<b>周边：</b>生活便利，靠近天河核心区'
+          ]
+        },
+        {
+           title: '🏥 校医院',
+          items: [
+            '<b>地址：</b>位于斜坡校道上',
+            '<b>开诊时间：</b>周一至周五 上午8:00-12:00，下午14:30-17:00。周六至周日 上午9:00-11:30，下午14:00-17:00（只看急诊）',
+            '<b>紧急电话：</b>120',
+
+          ]
+        },
+        {
+          title: '📦 快递站点',
+          items: [
+            '<b>营业时间：</b>一般为 8:00-22:30',
+            '<b>位置：</b>敬慎楼负一楼菜鸟驿站/西门极兔快递驿站'
+          ]
+        }
+      ]
+    }
+  ];
+
+  var tabsBox  = document.getElementById('campusTabs');
+  var img      = document.getElementById('campusMapImg');
+  var link     = document.getElementById('campusMapLink');
+  var missing  = document.getElementById('mapMissing');
+  var missFile = document.getElementById('missingFile');
+  var infoGrid = document.getElementById('infoGrid');
+
+  if (!tabsBox || !img || !link || !infoGrid) return;
+
+  var currentKey = CAMPUSES[0].key;
+
+  /* --- 生成标签按钮 --- */
+  var tabBtns = CAMPUSES.map(function (c, i) {
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'campus-tab';
+    b.setAttribute('role', 'tab');
+    b.setAttribute('aria-selected', 'false');
+    b.textContent = c.name;
+    b.addEventListener('click', function () { select(i); });
+    b.addEventListener('keydown', function (e) {
+      var next = null;
+      if (e.key === 'ArrowRight') next = (i + 1) % CAMPUSES.length;
+      if (e.key === 'ArrowLeft')  next = (i - 1 + CAMPUSES.length) % CAMPUSES.length;
+      if (next !== null) { e.preventDefault(); select(next); tabBtns[next].focus(); }
+    });
+    tabsBox.appendChild(b);
+    return b;
+  });
+
+  /* --- 渲染下方信息卡 --- */
+  function renderInfo(campus) {
+    infoGrid.innerHTML = campus.info.map(function (card) {
+      var lis = card.items.map(function (t) { return '<li>' + t + '</li>'; }).join('');
+      return '<div class="info-card"><h3>' + card.title + '</h3><ul>' + lis + '</ul></div>';
+    }).join('');
+  }
+
+  /* --- 切换校区 --- */
+  function select(index) {
+    var c = CAMPUSES[index];
+    currentKey = c.key;
+
+    tabBtns.forEach(function (b, j) {
+      b.setAttribute('aria-selected', j === index ? 'true' : 'false');
+      b.setAttribute('tabindex', j === index ? '0' : '-1');
+    });
+
+    /* 图片状态重置 */
+    missing.style.display = 'none';
+    img.style.display = 'block';
+    img.style.opacity = '0';
+    img.alt = c.alt;
+
+    img.onload = function () { img.style.opacity = '1'; };
+    img.onerror = function () {
+      img.style.display = 'none';
+      missing.style.display = 'flex';
+      missFile.textContent = c.file;
+    };
+
+    if (img.getAttribute('src') === c.file) {
+      /* 同一张图，避免缓存导致 onload 不触发 */
+      img.style.opacity = '1';
+    } else {
+      img.src = c.file;
+    }
+
+    /* 下载链接 */
+    link.href = c.file;
+    link.setAttribute('download', c.file);
+    link.textContent = '下载「' + c.name + '」高清 JPG 版地图';
+
+    /* 信息卡 */
+    renderInfo(c);
+
+    try { localStorage.setItem('campus', c.key); } catch (e) {}
+  }
+
+  /* --- 恢复上次选择 --- */
+  var startIndex = 0;
+  try {
+    var saved = localStorage.getItem('campus');
+    if (saved) {
+      CAMPUSES.forEach(function (c, i) { if (c.key === saved) startIndex = i; });
+    }
+  } catch (e) {}
+
+  select(startIndex);
+})();
+</script>
+
+</body>
+</html>
